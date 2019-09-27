@@ -1,0 +1,72 @@
+<style>
+    table {
+        margin-bottom: 2em;
+        
+    }
+    table, th, td {
+        border: 1px solid #ccc;
+        border-collapse: collapse;
+    }
+    th, td {
+        padding: 20px;
+    }
+</style>
+<p>У вас {$contacts_number} {if $contacts_number == 1}новый пользователь{else}новых пользователей{/if}:</p>
+
+{foreach from=$contacts item=contact}
+    <table>
+        <thead>
+            <tr>
+                <th>Поле</th>
+                <th>Значение</th>
+            </tr>
+        </thead>
+        <tbody>
+    {if $contact.company}<tr> <td>Компания:</td><td>{$contact.company}</td> </tr>{/if}
+    {if $contact.title}<tr> <td>Должность:</td><td>{$contact.title}</td> </tr>{/if}
+    {if $contact.name}<tr> <td>Полное имя:</td><td>{$contact.name}</td> </tr>{/if}
+    {if $contact.email}<tr> <td>Основной адрес эл. почты:</td> <td><a href="mailto:{$contact.email["value"]}">{$contact.email["value"]}</a></td> </tr>{/if}
+    {if $contact.email_array|is_array}
+        <tr>
+            <td>Все адреса электронной почты:</td> 
+            
+            <td>
+                <ul>
+                    {foreach from=$contact.email_array item=email}
+                        <li>Адрес эл. почты: {$email.value}<br>Статус подтверждения: {$email.status}<br>Доп. информация: {$email.ext}</li>
+                    {/foreach}
+                </ul>
+            </td>
+        </tr>
+    {/if}
+    {if $contact.firstname}<tr> <td>Имя:</td><td>{$contact.firstname}</td> </tr>{/if}
+    {if $contact.middlename}<tr> <td>Отчество:</td><td>{$contact.middlename}</td> </tr>{/if}
+    {if $contact.lastname}<tr> <td>Фамилия:</td><td>{$contact.lastname}</td> </tr>{/if}
+    
+    {if $contact.address|is_array}
+        <tr>
+            <td rowspan="{$contact.address|@count}">Адреса:</td>
+            
+            {foreach from=$contact.address item=address_item}
+            <td>
+                Полный адрес: {$address_item.value}<br>
+                Доп. информация: {$address_item.ext}
+                <ul>
+                    <li>Улица: {$address_item.data.street}</li>
+                    <li>Город: {$address_item.data.city}</li>
+                    <li>Регион: {$address_item.data.region}</li>
+                    <li>Страна: {$address_item.data.country}</li>
+                    <li>Индекс: {$address_item.data.zip}</li>
+                </ul>
+            </td>
+            </tr><tr>
+            {/foreach}
+        </tr>
+    {/if}
+    {if $contact.birth_day}<tr> <td>День рождения:</td><td>{$contact.birth_day}</td> </tr>{/if}
+    {if $contact.birth_month}<tr> <td>Месяц рождения:</td><td>{$contact.birth_month}</td> </tr>{/if}
+    {if $contact.birth_year}<tr> <td>Год рождения:</td><td>{$contact.birth_year}</td> </tr>{/if}
+    {if $contact.locale}<tr> <td>Локаль:</td><td>{$contact.locale}</td> </tr>{/if}
+</tbody>
+</table>
+{/foreach}
